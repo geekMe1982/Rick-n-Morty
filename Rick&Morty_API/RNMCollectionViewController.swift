@@ -64,7 +64,9 @@ class RNMCollectionViewController: UICollectionViewController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RNMCell.identifier, for: indexPath) as! RNMCell
         
         let profile = results[indexPath.row]
-        
+
+        cell.profileImageView.image = nil
+
         // Configure the cell
         cell.setup(with: profile)
         cell.contentView.backgroundColor = .systemTeal
@@ -101,9 +103,8 @@ extension RNMCollectionViewController {
             }
             do {
                 let jsonResult = try JSONDecoder().decode(APIResponse.self, from: data)
-                DispatchQueue.main.async {
+                DispatchQueue.main.asyncAfter(deadline: .now() + Double.random(in: 0...2)) {
                     self?.results = jsonResult.results
-                    print(jsonResult)
                     self?.collectionView.reloadData()
                 }
             }
