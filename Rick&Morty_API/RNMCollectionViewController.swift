@@ -10,9 +10,7 @@ import UIKit
 class RNMCollectionViewController: UICollectionViewController {
     
     var results: [Character] = []
-    
-    let url = "https://rickandmortyapi.com/api/character"
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -21,6 +19,13 @@ class RNMCollectionViewController: UICollectionViewController {
         
         fetchData()
         collectionView.register(RNMCell.self, forCellWithReuseIdentifier: RNMCell.identifier)
+    }
+
+    private func components() -> URLComponents {
+        var comp = URLComponents()
+        comp.scheme = "https"
+        comp.host = "rickandmortyapi.com"
+        return comp
     }
     
     // MARK: UICollectionViewDataSource
@@ -65,6 +70,13 @@ class RNMCollectionViewController: UICollectionViewController {
         cell.contentView.backgroundColor = .systemTeal
         return cell
     }
+
+    private func request(url: URL) -> URLRequest {
+        var request = URLRequest(url: url)
+        // for future auth.
+        //request.addValue("Client-ID \(accessKey)", forHTTPHeaderField: "Authorization")
+        return request
+    }
 }
 
 extension RNMCollectionViewController: UICollectionViewDelegateFlowLayout {
@@ -78,10 +90,12 @@ extension RNMCollectionViewController: UICollectionViewDelegateFlowLayout {
 extension RNMCollectionViewController {
     
     func fetchData() {
-        guard let url = URL(string: url) else {
-            return
-        }
-        let task = URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
+        var comp = components()
+        comp.path = "/api/character"
+        
+        let req = request(url: comp.url!)
+
+        let task = URLSession.shared.dataTask(with: req) { [weak self] data, _, error in
             guard let data = data, error == nil else {
                 return
             }
