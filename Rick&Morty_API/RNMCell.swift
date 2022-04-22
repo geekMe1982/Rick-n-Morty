@@ -13,6 +13,8 @@ protocol ReusableView: AnyObject {
 
 class RNMCell: UICollectionViewCell {
 
+    var representedId: Int?
+
     let name: UILabel = {
         let label = UILabel(frame: .zero)
         label.textAlignment = .left
