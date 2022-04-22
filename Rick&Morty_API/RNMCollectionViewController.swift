@@ -8,16 +8,30 @@
 import UIKit
 
 class RNMCollectionViewController: UICollectionViewController {
+
+    let networker = NetworkManager.shared
     
     var results: [Character] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        networker.posts(query: "") { [weak self] posts, error in
+          if let error = error {
+            print("error", error)
+            return
+          }
+
+          self?.results = posts!
+          DispatchQueue.main.async {
+            self?.collectionView.reloadData()
+          }
+        }
         
         self.title = "Rick and Morty"
         navigationController?.navigationBar.prefersLargeTitles = true
         
-        fetchData()
+        //fetchData()
         collectionView.register(RNMCell.self, forCellWithReuseIdentifier: RNMCell.identifier)
     }
 
@@ -67,6 +81,10 @@ class RNMCollectionViewController: UICollectionViewController {
 
         cell.profileImageView.image = nil
 
+        let representedIdentifier = profile.id
+
+        cell.representedId = representedIdentifier
+
         // Configure the cell
         cell.setup(with: profile)
         cell.contentView.backgroundColor = .systemTeal
@@ -85,33 +103,5 @@ extension RNMCollectionViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width, height: 200)
-    }
-    
-}
-
-extension RNMCollectionViewController {
-    
-    func fetchData() {
-        var comp = components()
-        comp.path = "/api/character"
-        
-        let req = request(url: comp.url!)
-
-        let task = URLSession.shared.dataTask(with: req) { [weak self] data, _, error in
-            guard let data = data, error == nil else {
-                return
-            }
-            do {
-                let jsonResult = try JSONDecoder().decode(APIResponse.self, from: data)
-                DispatchQueue.main.asyncAfter(deadline: .now() + Double.random(in: 0...2)) {
-                    self?.results = jsonResult.results
-                    self?.collectionView.reloadData()
-                }
-            }
-            catch {
-                print(error)
-            }
-        }
-        task.resume()
     }
 }
