@@ -12,7 +12,7 @@ struct APIResponse: Codable {
 }
 
 struct Character: Codable {
-    let id: String
+    let id: Int?
     let name: String
     let species: String
     let gender: String
