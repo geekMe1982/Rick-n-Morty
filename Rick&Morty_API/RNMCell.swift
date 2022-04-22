@@ -12,7 +12,7 @@ protocol ReusableView: AnyObject {
 }
 
 class RNMCell: UICollectionViewCell {
-    
+
     let name: UILabel = {
         let label = UILabel(frame: .zero)
         label.textAlignment = .left
@@ -34,14 +34,14 @@ class RNMCell: UICollectionViewCell {
         return label
     }()
     
-    private let profileImageView: UIImageView = {
+    let profileImageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 5
         return imageView
     }()
-    
+
     override init(frame: CGRect) {
         super.init(frame: .zero)
         setupViews()
@@ -64,7 +64,7 @@ class RNMCell: UICollectionViewCell {
         race.translatesAutoresizingMaskIntoConstraints = false
         gender.translatesAutoresizingMaskIntoConstraints = false
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
-        
+
         NSLayoutConstraint.activate([
             name.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
             name.topAnchor.constraint(equalTo: contentView.topAnchor, constant:8),
