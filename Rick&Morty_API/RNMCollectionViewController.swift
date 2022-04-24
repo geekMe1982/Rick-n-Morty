@@ -16,7 +16,7 @@ class RNMCollectionViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        networker.posts(query: "") { [weak self] posts, error in
+        networker.getCharacters(query: "") { [weak self] posts, error in
           if let error = error {
             print("error", error)
             return
@@ -104,4 +104,16 @@ extension RNMCollectionViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width, height: 200)
     }
+
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        print(indexPath)
+    }
+
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let position = collectionView.contentOffset.y
+        if position > (collectionView.contentSize.height-100-scrollView.frame.size.height) {
+            print("more data")
+        }
+    }
+
 }
