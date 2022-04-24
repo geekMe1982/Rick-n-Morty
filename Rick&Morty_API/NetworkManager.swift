@@ -13,8 +13,9 @@ enum NetworkManagerError: Error {
     case badLocalUrl
 }
 
-fileprivate struct APIResponse1: Codable {
+fileprivate struct APIResponse: Codable {
     let results: [Character]
+    let info: Information
 }
 
 class NetworkManager {
@@ -41,7 +42,7 @@ class NetworkManager {
         return request
     }
 
-    func posts(query: String, completion: @escaping ([Character]?, Error?) -> (Void)) {
+    func getCharacters(query: String, completion: @escaping ([Character]?, Error?) -> (Void)) {
 
         var comp = components()
         comp.path = "/api/character"
@@ -67,9 +68,11 @@ class NetworkManager {
             }
 
             do {
-                let response = try JSONDecoder().decode(APIResponse1.self, from: data)
+                let response = try JSONDecoder().decode(APIResponse.self, from: data)
                 completion(response.results, nil)
-                
+                print(response.info.pages)
+
+
             } catch let error {
                 completion(nil, error)
             }
