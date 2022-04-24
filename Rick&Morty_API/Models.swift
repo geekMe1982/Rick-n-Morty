@@ -7,8 +7,14 @@
 
 import Foundation
 
-struct APIResponse: Codable {
+struct Information: Codable {
+    var count: Int
+    var pages: Int
+}
+
+struct MainResponse: Codable {
     let results: [Character]
+    var info: Information?
 }
 
 struct Character: Codable {
@@ -16,15 +22,15 @@ struct Character: Codable {
     let name: String
     let species: String
     let gender: String
-    let location: theLocation
+    let location: Location
     let image: String
-    let episode: [episodes]
+    let episode: [Episodes]
 }
 
-struct theLocation: Codable {
+struct Location: Codable {
     let name: String
 }
 
-struct episodes: Codable {
+struct Episodes: Codable {
     
 }
