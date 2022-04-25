@@ -46,9 +46,9 @@ class NetworkManager {
 
         var comp = components()
         comp.path = "/api/character"
-//        comp.queryItems = [
-//            URLQueryItem(name: "", value: query)
-//        ]
+        comp.queryItems = [
+            URLQueryItem(name: "", value: query)
+        ]
         let req = request(url: comp.url!)
 
         let task = session.dataTask(with: req) { data, response, error in

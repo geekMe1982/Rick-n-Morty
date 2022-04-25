@@ -31,15 +31,7 @@ class RNMCollectionViewController: UICollectionViewController {
         self.title = "Rick and Morty"
         navigationController?.navigationBar.prefersLargeTitles = true
         
-        //fetchData()
         collectionView.register(RNMCell.self, forCellWithReuseIdentifier: RNMCell.identifier)
-    }
-
-    private func components() -> URLComponents {
-        var comp = URLComponents()
-        comp.scheme = "https"
-        comp.host = "rickandmortyapi.com"
-        return comp
     }
     
     // MARK: UICollectionViewDataSource
@@ -89,13 +81,6 @@ class RNMCollectionViewController: UICollectionViewController {
         cell.setup(with: profile)
         cell.contentView.backgroundColor = .systemTeal
         return cell
-    }
-
-    private func request(url: URL) -> URLRequest {
-        var request = URLRequest(url: url)
-        // for future auth.
-        //request.addValue("Client-ID \(accessKey)", forHTTPHeaderField: "Authorization")
-        return request
     }
 }
 
